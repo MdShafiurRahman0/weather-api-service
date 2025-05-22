@@ -13,7 +13,7 @@ app = Flask(__name__)
 # Configuration - IMPORTANT: Store your key in .env file!
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY") or "0455e18df57149948c7103130252105"  # TEMPORARY - Remove hardcoded key after testing
 LOCATION = "Dhaka,Bangladesh"  # Comma separated, no spaces
-VERSION = "v1.0.0"
+VERSION = os.getenv("VERSION", "unknown")  # <-- dynamically set version from env
 WEATHER_API_URL = f"https://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q={LOCATION}&aqi=yes"
 
 def get_weather():
@@ -21,10 +21,10 @@ def get_weather():
     try:
         print(f"Attempting to fetch from: {WEATHER_API_URL}")
         response = requests.get(WEATHER_API_URL, timeout=10)
-        response.raise_for_status()  # Raises HTTPError for bad responses
+        response.raise_for_status()
         
         data = response.json()
-        print("API Response:", data)  # Debug output
+        print("API Response:", data)
         
         return {
             "temperature": data["current"]["temp_c"],
@@ -70,10 +70,7 @@ def health_check():
         }), 503
 
 if __name__ == "__main__":
-    # Verify configuration
     if not WEATHER_API_KEY:
         print("Error: WEATHER_API_KEY not set!")
     
     app.run(host="0.0.0.0", port=5000, debug=True)
-
-
