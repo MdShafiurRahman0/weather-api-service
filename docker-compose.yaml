@@ -1,0 +1,28 @@
+# Docker Compose file version
+version: '3.8'
+
+# Define the services (containers) for your application
+services:
+  web:
+    # Build the Docker image from the Dockerfile in the current directory
+    build: .
+    # Map port 8080 on the host to port 5000 in the container
+    # This allows you to access your Flask app at http://localhost:8080
+    ports:
+      - "8080:5000"
+    # Mount the current directory (where your app code is) into the container's /app directory
+    # This is crucial for development: any changes you make to your code on your host machine
+    # will instantly be reflected inside the container without needing to rebuild the image.
+    volumes:
+      - .:/app
+    # Set environment variables specific to development
+    # FLASK_ENV=development enables debug mode and auto-reloading for Flask.
+    # FLASK_DEBUG=1 is an alternative if FLASK_ENV doesn't fully enable debug for your Flask version.
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1 # Ensure debug mode is active for auto-reloading
+    # Override the CMD from the Dockerfile for development.
+    # We use Flask's built-in development server here because it supports auto-reloading
+    # when code changes are detected in the mounted volume.
+    # Note: For production, you would typically use the Gunicorn CMD from your Dockerfile.
+    command: python app.py
