@@ -1,6 +1,10 @@
 # Use a minimal base image
 FROM python:3.11-slim
 
+# Define build-time variable and set it as an environment variable
+ARG VERSION
+ENV VERSION=$VERSION
+
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
