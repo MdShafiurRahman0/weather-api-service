@@ -5,15 +5,13 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 
-# Configuration - IMPORTANT: Store your key in .env file!
-WEATHER_API_KEY = os.getenv("WEATHER_API_KEY") or "0455e18df57149948c7103130252105"  # TEMPORARY - Remove hardcoded key after testing
-LOCATION = "Dhaka,Bangladesh"  # Comma separated, no spaces
-VERSION = os.getenv("VERSION", "unknown")  # <-- dynamically set version from env
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY") or "0455e18df57149948c7103130252105" 
+LOCATION = "Dhaka,Bangladesh" 
+VERSION = os.getenv("VERSION", "unknown")  
 WEATHER_API_URL = f"https://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q={LOCATION}&aqi=yes"
 
 def get_weather():
